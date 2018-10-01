@@ -158,7 +158,7 @@ class Blank extends Component {
             inputTextStyle= { color: this.state.simpleColor === '#fff' ? '#000' : '#fff'}
         }else if(this.state.selectedStyleType === 'boxed'){
             selectedColor = this.state.boxedColor
-            questionStyle = { backgroundColor: this.state.boxedColor, opacity: 0.5, padding: '10px 20px' } 
+            questionStyle = { backgroundColor: 'rgba(255, 255, 255, 0.2)', padding: '10px 20px' } 
             optionStyle = { backgroundColor: this.state.boxedColor } 
             bodyStyle = { backgroundColor: this.state.boxedColor } 
             questionTitleStyle= {color: this.state.boxedColor === '#fff' ? '#000' : '#fff', fontWeight: 'bold', fontSize: this.state.questionFontsize }
@@ -166,7 +166,7 @@ class Blank extends Component {
             inputTextStyle= { color: this.state.boxedColor === '#fff' ? '#000' : '#fff'}
         }else{
             selectedColor = this.state.inlineColor
-            questionStyle = { backgroundColor: '#000', padding: '10px', border: '1px solid', borderRadius: '5px', opacity: 0.5 } 
+            questionStyle = { backgroundColor: '#000', padding: '10px', border: '1px solid', borderRadius: '5px', margin: '10px' } 
             optionStyle = { backgroundColor: this.state.inlineColor } 
             bodyStyle = { backgroundColor: this.state.inlineColor } 
             questionTitleStyle= {color: this.state.inlineColor === '#fff' ? '#000' : '#fff', fontWeight: 'bold', fontSize: this.state.questionFontsize }
@@ -242,13 +242,13 @@ class Blank extends Component {
                                         </NavItem>
                                     </Nav>
                                     <TabContent activeTab={this.state.activeTab}>
-                                        <TabPane tabId="1">
+                                        <TabPane tabId="3">
                                             <div className="col-md-12">
                                                 <div className="row">
                                                     <div className='col-md-4'>
                                                         <div className="col-md-6">
-                                                            <Label md={4}>Simple</Label>
-                                                            <div className={`d-flex justify-content-start ml-3`}>
+                                                            <Label>Simple</Label>
+                                                            <div className={`d-flex justify-content-start`}>
                                                                 <ul className="themes">
                                                                     {
                                                                         this.state.colors.map((color, index) => {
@@ -261,8 +261,8 @@ class Blank extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
-                                                            <Label md={4}>Boxed</Label>
-                                                            <div className={`d-flex justify-content-start ml-3`}>
+                                                            <Label>Boxed</Label>
+                                                            <div className={`d-flex justify-content-start`}>
                                                                 <ul className="themes">
                                                                     {
                                                                         this.state.colors.map((color, index) => {
@@ -275,8 +275,8 @@ class Blank extends Component {
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
-                                                            <Label md={4}>Inline</Label>
-                                                            <div className={`d-flex justify-content-start ml-3`}>
+                                                            <Label>Inline</Label>
+                                                            <div className={`d-flex justify-content-start`}>
                                                                 <ul className="themes">
                                                                     {
                                                                         this.state.colors.map((color, index) => {
@@ -288,38 +288,88 @@ class Blank extends Component {
                                                                 </ul>
                                                             </div>
                                                         </div>
+                                                        <div className="fontSizeContainer col-md-6">
+                                                            <FormControl fullWidth className='form-group'>
+                                                                <InputLabel htmlFor="option-simple">Font Size</InputLabel>
+                                                                <Select onChange={(e) => this.setState({ questionFontsize: e.target.value })} value={this.state.questionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
+                                                                    {
+                                                                        this.state.fontSizes.map((fontSize, index) => {
+                                                                            return(
+                                                                            <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
+                                                                        )
+                                                                    })}
+                                                                </Select>
+                                                            </FormControl>
+                                                            <FormControl fullWidth>
+                                                                <InputLabel htmlFor="option-simple">Font Size</InputLabel>
+                                                                <Select onChange={(e) => this.setState({ optionFontsize: e.target.value })} value={this.state.optionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
+                                                                    {
+                                                                        this.state.fontSizes.map((fontSize, index) => {
+                                                                            return(
+                                                                            <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
+                                                                        )
+                                                                    })}
+                                                                </Select>
+                                                            </FormControl>
+                                                        </div>
                                                     </div>
-                                                    <div className="fontSizeContainer">
-                                                        <FormControl fullWidth className='form-group'>
-                                                            <InputLabel htmlFor="option-simple">Font Size</InputLabel>
-                                                            <Select onChange={(e) => this.setState({ questionFontsize: e.target.value })} value={this.state.questionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
-                                                                <MenuItem value=""><em>None</em></MenuItem>
-                                                                {
-                                                                    this.state.fontSizes.map((fontSize, index) => {
-                                                                        return(
-                                                                        <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
-                                                                    )
-                                                                })}
-                                                            </Select>
-                                                        </FormControl>
-                                                        <FormControl fullWidth>
-                                                            <InputLabel htmlFor="option-simple">Font Size</InputLabel>
-                                                            <Select onChange={(e) => this.setState({ optionFontsize: e.target.value })} value={this.state.optionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
-                                                                <MenuItem value=""><em>None</em></MenuItem>
-                                                                {
-                                                                    this.state.fontSizes.map((fontSize, index) => {
-                                                                        return(
-                                                                        <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
-                                                                    )
-                                                                })}
-                                                            </Select>
-                                                        </FormControl>
+                                                    <div className='col-md-6 pollPreviewOptions' style={bodyStyle}>
+                                                        <div className='pollPreviewQuestion' style={questionStyle}>
+                                                            <p style={questionTitleStyle}>{this.state.pollQuestion ? this.state.pollQuestion : 'Question'}</p>
+                                                        </div>
+                                                        {   this.state.pollQuestionType === 'checkbox' ? 
+                                                                <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
+                                                                    {
+                                                                        this.state.pollOptions.map((option, index) => {
+                                                                            return(
+                                                                                <div className={option.isEditing ? `poll-option-container pl-15 pr-10`  :  `poll-option-container`} key={index}>
+                                                                                    <Checkbox
+                                                                                        checked={this.state.pollQuestionAnswer.find(answer => answer == index) !== undefined}
+                                                                                        onChange={e => this.addAnswer(e.target.value)}
+                                                                                        value={`${index}`}
+                                                                                        color="primary"
+                                                                                    />
+                                                                                    <FormLabel style={optionTagStyle} component="span">{option.name ? option.name : `Option ${index + 1}`}</FormLabel>
+                                                                                </div>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </FormControl>
+                                                                :
+                                                                <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
+                                                                    {
+                                                                        this.state.pollOptions.map((option, index) => {
+                                                                            return(
+                                                                                <div className={option.isEditing ? `poll-option-container pl-15 pr-10`  :  `poll-option-container`} key={index}>
+                                                                                    <Radio
+                                                                                        checked={this.state.pollQuestionAnswer[0] === `${index}`}
+                                                                                        onChange={e => this.addAnswer(e.target.value)}
+                                                                                        value={`${index}`}
+                                                                                        color="primary"
+                                                                                        name="radio-button-demo"
+                                                                                        aria-label={option.name ? option.name : `Option ${index + 1}`}
+                                                                                    />
+                                                                                    <FormLabel style={optionTagStyle} component="span">{option.name ? option.name : `Option ${index + 1}`}</FormLabel>
+                                                                                </div>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </FormControl>
+                                                        }  
                                                     </div>
                                                 </div>
                                             </div>    
                                         </TabPane>
                                         <TabPane tabId="2" />
-                                        <TabPane tabId="3" />
+                                        <TabPane tabId="1" >
+                                            <FormControl className={`form-control pollReviewOptionContainer`}>
+                                                <RadioGroup aria-label="Option" name="option" className={`from-group pollReviewRadioOptionContainer d-inline`}
+                                                    onChange={e => this.setState({ pollQuestionType: e.target.value })} value={this.state.pollQuestionType}>
+                                                    <FormControlLabel value={`checkbox`} control={<Radio color="primary" />} label={`Multiple`} />
+                                                    <FormControlLabel value={`radio`} control={<Radio color="primary" />} label={`Single`} />
+                                                </RadioGroup>
+                                            </FormControl>
+                                        </TabPane>
                                     </TabContent>
                                 </div>
                             </div>
@@ -342,7 +392,7 @@ class Blank extends Component {
                                         }
                                     </div>
                                     {   this.state.pollQuestionType === 'checkbox' ? 
-                                            <FormControl className={`form-control pollReviewOptionContainer pl-5`} style={optionStyle}>
+                                            <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
                                                 {
                                                     this.state.pollOptions.map((option, index) => {
                                                         return(
@@ -372,7 +422,7 @@ class Blank extends Component {
                                                 }
                                             </FormControl>
                                             :
-                                            <FormControl className={`form-control pollReviewOptionContainer pl-5`} style={optionStyle}>
+                                            <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
                                                 {
                                                     this.state.pollOptions.map((option, index) => {
                                                         return(
@@ -410,13 +460,6 @@ class Blank extends Component {
                     </Col>
                     {
                         !this.state.isBreadcumbOpen &&  <div className='col-md-2 poll-question-type-container'>
-                            <FormControl className={`form-control pollReviewOptionContainer`}>
-                                <RadioGroup aria-label="Option" name="option" className={`from-group pollReviewRadioOptionContainer d-inline`}
-                                    onChange={e => this.setState({ pollQuestionType: e.target.value })} value={this.state.pollQuestionType}>
-                                    <FormControlLabel value={`checkbox`} control={<Radio color="primary" />} label={`Multiple`} />
-                                    <FormControlLabel value={`radio`} control={<Radio color="primary" />} label={`Single`} />
-                                </RadioGroup>
-                            </FormControl>
                             <Button className="float-right" color="primary" onClick={() => this.setState({pollOptions: [...this.state.pollOptions, { name: '' }] })}>Add Option</Button>
                             <Button className="float-right" color="primary" onClick={() => this.handleSubmit()}>Create Poll</Button>
                         </div>
@@ -498,20 +541,21 @@ class Blank extends Component {
     }
 
     _showTabContent(question){
+        let { questionStyle, optionStyle, bodyStyle, questionTitleStyle, optionTagStyle } = this._getAllListedQuestionStyle(question)
         return (
             <TabContent activeTab={question.activeTab}>
-                <TabPane tabId="1">
+                <TabPane tabId="3">
                     <div className="col-md-12">
                         <div className="row">
                             <div className='col-md-4'>
                                 <div className="col-md-6">
-                                    <Label md={4}>Simple</Label>
-                                    <div className={`d-flex justify-content-start ml-3`}>
+                                    <Label>Simple</Label>
+                                    <div className={`d-flex justify-content-start`}>
                                         <ul className="themes">
                                             {
                                                 this.state.colors.map((color, index) => {
                                                     return(
-                                                        <li key={index} onClick={() => this.setState({ simpleColor: color.colorCode, selectedStyleType: 'simple' })} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
+                                                        <li key={index} onClick={() => this.setQuestionLayoutColor(color.colorCode, 'simple', question.id)} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
                                                     )
                                                 })
                                             }
@@ -519,13 +563,13 @@ class Blank extends Component {
                                     </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <Label md={4}>Boxed</Label>
-                                    <div className={`d-flex justify-content-start ml-3`}>
+                                    <Label>Boxed</Label>
+                                    <div className={`d-flex justify-content-start`}>
                                         <ul className="themes">
                                             {
                                                 this.state.colors.map((color, index) => {
                                                     return(
-                                                        <li key={index} onClick={() => this.setState({ boxedColor: color.colorCode, selectedStyleType: 'boxed' })} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
+                                                        <li key={index} onClick={() => this.setQuestionLayoutColor(color.colorCode, 'boxed', question.id)} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
                                                     )
                                                 })
                                             }
@@ -533,53 +577,134 @@ class Blank extends Component {
                                     </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <Label md={4}>Inline</Label>
-                                    <div className={`d-flex justify-content-start ml-3`}>
+                                    <Label>Inline</Label>
+                                    <div className={`d-flex justify-content-start`}>
                                         <ul className="themes">
                                             {
                                                 this.state.colors.map((color, index) => {
                                                     return(
-                                                        <li key={index} onClick={() => this.setState({ inlineColor: color.colorCode, selectedStyleType: 'inline' })} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
+                                                        <li key={index} onClick={() => this.setQuestionLayoutColor(color.colorCode, 'inline', question.id)} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
                                                     )
                                                 })
                                             }
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="fontSizeContainer">
-                                <FormControl fullWidth className='form-group'>
-                                    <InputLabel htmlFor="option-simple">Font Size</InputLabel>
-                                    <Select onChange={(e) => this.setState({ questionFontsize: e.target.value })} value={this.state.questionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
-                                        <MenuItem value=""><em>None</em></MenuItem>
-                                        {
-                                            this.state.fontSizes.map((fontSize, index) => {
-                                                return(
-                                                <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
-                                            )
-                                        })}
-                                    </Select>
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="option-simple">Font Size</InputLabel>
-                                    <Select onChange={(e) => this.setState({ optionFontsize: e.target.value })} value={this.state.optionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
-                                        <MenuItem value=""><em>None</em></MenuItem>
-                                        {
-                                            this.state.fontSizes.map((fontSize, index) => {
-                                                return(
-                                                <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
-                                            )
-                                        })}
-                                    </Select>
-                                </FormControl>
-                            </div>
+                                <div className="fontSizeContainer col-md-6">
+                                    <FormControl fullWidth className='form-group'>
+                                        <InputLabel htmlFor="option-simple">Font Size</InputLabel>
+                                        <Select onChange={(e) => this.setQuestionLayoutFontSize('questionFontsize', e.target.value, question.id)} value={this.state.questionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
+                                            <MenuItem value=""><em>None</em></MenuItem>
+                                            {
+                                                this.state.fontSizes.map((fontSize, index) => {
+                                                    return(
+                                                    <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="option-simple">Font Size</InputLabel>
+                                        <Select onChange={(e) => this.setQuestionLayoutFontSize('optionFontsize', e.target.value, question.id)} value={this.state.optionFontsize} inputProps={{ name: 'fontSize', id: 'fontSize-simple', }}>
+                                            <MenuItem value=""><em>None</em></MenuItem>
+                                            {
+                                                this.state.fontSizes.map((fontSize, index) => {
+                                                    return(
+                                                    <MenuItem  key={index} value={fontSize}>{fontSize}</MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </div>   
+                            <div className="col-md-6">
+                                <div className='form-control pollPreviewOptions' style={bodyStyle}>
+                                    <div className='pollPreviewQuestion' style={questionStyle}>
+                                    <p style={questionTitleStyle}>{question.pollQuestion.pollQuestion}</p> 
+                                    </div>
+                                    {   question.pollQuestionType === 'checkbox' ? 
+                                            <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
+                                                {
+                                                    question.pollOptions.list.map((option, index) => {
+                                                        return(
+                                                            <div className={option.isEditing ? `poll-option-container pl-15 pr-10`  :  `poll-option-container`} key={index}>
+                                                                <Checkbox
+                                                                    checked={this.state.pollQuestionAnswer.find(answer => answer == index) !== undefined}
+                                                                    onChange={e => this.updateQuestionAnswer(e.target.value, question)}
+                                                                    value={`${index}`}
+                                                                    color="primary"
+                                                                />
+                                                                <FormLabel style={optionTagStyle} component="span">{option.name}</FormLabel>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </FormControl>
+                                            :
+                                            <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
+                                                {
+                                                    question.pollOptions.list.map((option, index) => {
+                                                        return(
+                                                            <div className={option.isEditing ? `poll-option-container pl-15 pr-10`  :  `poll-option-container`} key={index}>
+                                                                <Radio
+                                                                    checked={false}
+                                                                    onChange={e => this.updateQuestionAnswer(e.target.value, question)}
+                                                                    value={`${index}`}
+                                                                    color="primary"
+                                                                    name="radio-button-demo"
+                                                                    aria-label={option.name ? option.name : `Option ${index + 1}`}
+                                                                />
+                                                                <FormLabel style={optionTagStyle} component="span">{option.name}</FormLabel>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </FormControl>
+                                    }   
+                                </div>
+                            </div>                         
                         </div>
                     </div>    
                 </TabPane>
                 <TabPane tabId="2" />
-                <TabPane tabId="3" />
+                <TabPane tabId="1">
+                    <FormControl className={`form-control pollReviewOptionContainer`}>
+                        <RadioGroup aria-label="Option" name="option" className={`from-group pollReviewRadioOptionContainer d-inline`}
+                            onChange={e => {}} value={question.pollQuestionType}>
+                            <FormControlLabel value={`checkbox`} control={<Radio color="primary" />} label={`Multiple`} />
+                            <FormControlLabel value={`radio`} control={<Radio color="primary" />} label={`Single`} />
+                        </RadioGroup>
+                    </FormControl>
+                </TabPane>
             </TabContent>
         )
+    }
+
+    setQuestionLayoutColor(colorCode, selectedStyleType, questionId){
+        let { pollQuestionsList} = this.state
+        pollQuestionsList = pollQuestionsList.map(question => {
+            if(question.id === questionId){
+                question.selectedStyleType = selectedStyleType
+                question.color = colorCode
+            }
+            return question;
+        })
+        this.setState({ pollQuestionsList })
+    }
+
+    setQuestionLayoutFontSize(fontType, value, questionId){
+        let { pollQuestionsList} = this.state
+        pollQuestionsList = pollQuestionsList.map(question => {
+            if(question.id === questionId){
+                if(fontType === 'questionFontsize'){
+                    question.pollQuestion.questionFontsize = value
+                }else{
+                    question.pollOptions.optionFontsize = value
+                }
+            }
+            return question;
+        })
+        this.setState({ pollQuestionsList })
     }
 
     _getAllListedQuestionStyle(question){
@@ -598,14 +723,14 @@ class Blank extends Component {
             optionTagStyle = { color: question.color === '#fff' ? '#000' : '#fff', fontWeight: 'bold', fontSize: question.pollOptions.optionFontsize }
             inputTextStyle= { color: question.color === '#fff' ? '#000' : '#fff'}
         }else if(question.selectedStyleType === 'boxed'){
-            questionStyle = { backgroundColor: question.color, opacity: 0.5, padding: '10px 20px' } 
+            questionStyle = { backgroundColor: 'rgba(255, 255, 255, 0.2)', padding: '10px 20px' } 
             optionStyle = { backgroundColor: question.color } 
             bodyStyle = { backgroundColor: question.color } 
             questionTitleStyle= {color: question.color === '#fff' ? '#000' : '#fff', fontWeight: 'bold', fontSize: question.pollQuestion.questionFontsize }
             optionTagStyle = { color: question.color === '#fff' ? '#000' : '#fff', fontWeight: 'bold', fontSize: question.pollOptions.optionFontsize }
             inputTextStyle= { color: question.color === '#fff' ? '#000' : '#fff'}
         }else{
-            questionStyle = { backgroundColor: '#000', padding: '10px', border: '1px solid', borderRadius: '5px', opacity: 0.5 } 
+            questionStyle = { backgroundColor: '#000', padding: '10px', border: '1px solid', borderRadius: '5px', margin: '10px' } 
             optionStyle = { backgroundColor: question.color } 
             bodyStyle = { backgroundColor: question.color } 
             questionTitleStyle= {color: question.color === '#fff' ? '#000' : '#fff', fontWeight: 'bold', fontSize: question.pollQuestion.questionFontsize }
@@ -670,7 +795,7 @@ class Blank extends Component {
                                     }
                                 </div>
                                 {   question.pollQuestionType === 'checkbox' ? 
-                                        <FormControl className={`form-control pollReviewOptionContainer pl-5`} style={optionStyle}>
+                                        <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
                                             {
                                                 question.pollOptions.list.map((option, index) => {
                                                     return(
@@ -700,7 +825,7 @@ class Blank extends Component {
                                             }
                                         </FormControl>
                                         :
-                                        <FormControl className={`form-control pollReviewOptionContainer pl-5`} style={optionStyle}>
+                                        <FormControl className={`form-control pollReviewOptionContainer`} style={optionStyle}>
                                             {
                                                 question.pollOptions.list.map((option, index) => {
                                                     return(
@@ -738,13 +863,6 @@ class Blank extends Component {
                 </Col>
                 {
                     !question.isBreadcumbOpen &&  <div className='col-md-2 poll-question-type-container'>
-                        <FormControl className={`form-control pollReviewOptionContainer`}>
-                            <RadioGroup aria-label="Option" name="option" className={`from-group pollReviewRadioOptionContainer d-inline`}
-                                onChange={e => {}} value={question.pollQuestionType}>
-                                <FormControlLabel value={`checkbox`} control={<Radio color="primary" />} label={`Multiple`} />
-                                <FormControlLabel value={`radio`} control={<Radio color="primary" />} label={`Single`} />
-                            </RadioGroup>
-                        </FormControl>
                         <Button className="float-right" color="primary" onClick={() => {}}>Add Option</Button>
                     </div>
                 }

@@ -111,6 +111,7 @@ class Pages extends React.Component {
             const status = $(this).attr('data-status')
 
             $(this).addClass('hiddenLayout')
+            $(this).prev('div').children('div').removeClass('hiddenLayout')
             $(this).prev('div').removeClass('hiddenLayout')
             that.editQuestionTitle(questionId, questionIndex, status)
         })

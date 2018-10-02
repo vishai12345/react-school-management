@@ -20,7 +20,9 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import { DateTimePicker } from 'material-ui-pickers';
 
+import { Redirect } from 'react-router-dom';
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -491,7 +493,7 @@ class BasicTable extends Component {
 		super(props)
 		this.state = {
 			order: 'asc',
-    	orderBy: 'assNum',
+    		orderBy: 'assNum',
 			selected: [],
 			data: data,
 			searchText: '',
@@ -499,13 +501,24 @@ class BasicTable extends Component {
 			dropdownOpen: false,
 			showOnlySelectedTD: ["assName", "assNum", "modified", "created", "status", "response"],
 			filterOptionArr: {},
-			showCreatePollContainer: false
+			showCreatePollContainer: false,
+			pollName: null,
+			redirect: false,
+			startingDate: new Date().toLocaleDateString(),
+			endingDate: null,
+			selectedDate: new Date(),
 		}
 	}
 
 	componentDidMount(){
-		
 	}
+
+	handleDateChange = (date) => {
+		this.setState({ 
+			selectedDate: date,
+			endingDate: new Date(date).toLocaleDateString()
+		});
+	};
 
 	statusChange = (value, id) => {
 		let { data } = this.state
@@ -663,10 +676,10 @@ class BasicTable extends Component {
 		}); 
 
 		var hiddenElement = document.createElement('a');
-    hiddenElement.href = encodeURI(csvContent);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = 'User-Table.csv';
-    hiddenElement.click();
+		hiddenElement.href = encodeURI(csvContent);
+		hiddenElement.target = '_blank';
+		hiddenElement.download = 'User-Table.csv';
+		hiddenElement.click();
 	}
 
 	printData = () => {
@@ -715,7 +728,23 @@ class BasicTable extends Component {
 			return true;
 	}
 
+	redirectTo = () => {
+		this.setState({ redirect: true })
+	}
+
 	render() {
+
+		if (this.state.redirect) {
+			return <Redirect to={{
+				pathname: '/poll/edit',
+				state: { 
+					pollName: this.state.pollName,
+					startingDate: this.state.startingDate,
+					endingDate: this.state.endingDate
+				}
+			}}/>
+		}
+
 		const { classes } = this.props
 		const { data, order, orderBy, selected } = this.state;
 		return (
@@ -732,7 +761,7 @@ class BasicTable extends Component {
 						printData={this.printData}/>
 					<div className="table-responsive"
 						style={{
-							transform: `translate(0px, ${this.state.isBredcrumbPressed ? 500 : 0}px)`,
+							transform: `translate(0px, ${this.state.isBredcrumbPressed ? 2500 : 0}px)`,
 							transition: 'transform 500ms ease-in-out',
 							opacity: this.state.isBredcrumbPressed ? 0 : 1,
 							zIndex: this.state.isBredcrumbPressed ? -99 : 999,
@@ -786,8 +815,21 @@ class BasicTable extends Component {
 								this.state.showCreatePollContainer &&	<div class="row createPollContainer">
 									<div class="col-12">
 										<div class="createPoll">
-											<input type="text" class="form-control" name="" />
-											<button class="btn btn-secondary">Create Poll</button>
+											<input onChange={e => this.setState({ pollName: e.target.value })} type="text" class="form-control" name="" />
+											<p> Starting Date : { this.state.startingDate } 00:00:00</p>
+											{
+												this.state.endingDate && <p> Ending Date : { this.state.endingDate } 00:00:00</p>
+											}
+											<DateTimePicker
+												value={this.state.selectedDate}
+												clearable
+												label="Choose a date & Time"
+												onChange={this.handleDateChange}
+												leftArrowIcon={<i className="zmdi zmdi-arrow-back" />}
+												rightArrowIcon={<i className="zmdi zmdi-arrow-forward" />}
+												fullWidth
+											/>
+											<button disabled={!this.state.pollName} onClick={this.redirectTo} class="btn btn-secondary">Create Poll</button>
 										</div>   
 									</div>
 								</div>

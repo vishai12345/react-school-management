@@ -5,7 +5,8 @@ import React from 'react';
 
 import { 
     Button, FormGroup, Label, CardHeader, CardBody, Col, TabContent, TabPane, Nav, NavItem, NavLink,
-    Modal, ModalHeader, ModalBody, ModalFooter, Input, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+    Modal, ModalHeader, ModalBody, ModalFooter, Input, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
+    Tooltip
 } from 'reactstrap';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -525,7 +526,6 @@ class Pages extends React.Component {
         if(questionsIndexArray && questionsIndexArray.length) {
             questionsIndexArray = questionsIndexArray.map(question => {
                 if(question.id === questionID){
-                    console.log(questionID, questionsIndex, isEditingQuestionTitle, 'editQuestionTitle', 'find')
                     question = {...question, isEditingQuestionTitle };
                 }
                 return question
@@ -545,6 +545,21 @@ class Pages extends React.Component {
                 questionsArray[questionsIndex] = questionsIndexArray
                 this.setState({ questionsArray })
             }
+        }
+    }
+
+    toggleTooltipButtons(questionID, questionsIndex, type){
+        let { questionsArray } = this.state
+        let questionsIndexArray = questionsArray[questionsIndex]
+        if(questionsIndexArray && questionsIndexArray.length) {
+            questionsIndexArray = questionsIndexArray.map(question => {
+                if(question.id === questionID){
+                    question = {...question, [type]: !question[type] };
+                }
+                return question
+            })
+            questionsArray[questionsIndex] = questionsIndexArray
+            this.setState({ questionsArray }, () => console.log(questionsArray))
         }
     }
 
@@ -636,25 +651,53 @@ class Pages extends React.Component {
                                                                                             <div className={`card questionCardCustom`} style={{ height: 'auto' }} >
                                                                                                 <CardHeader>
                                                                                                     <div className="d-flex justify-content-end" > 
-                                                                                                        <Button onClick={() => this.chnageQuestionType(questionObj, questionsIndex)} color="link">
-                                                                                                            <span className="fa fa-cog"></span>{' '}
-                                                                                                            { questionObj.isMouseEnter && <span style={{ color: 'black' }}>Setting</span> }
-                                                                                                        </Button>
-                                                                                                    
-                                                                                                        <Button color="link" onClick={() => {}}>
-                                                                                                            <span className="fa fa-files-o"></span>{' '}
-                                                                                                            { questionObj.isMouseEnter && <span style={{ color: 'black' }}>Copy</span> }
-                                                                                                        </Button>
-                                                                                                    
-                                                                                                        <Button color="link" onClick={() => {}}>
-                                                                                                            <span className="fa fa-cogs"></span>{' '}
-                                                                                                            { questionObj.isMouseEnter && <span style={{ color: 'black' }}>Logic</span> }
-                                                                                                        </Button>
-                                                                                                    
-                                                                                                        <Button disabled={questionObj.editingLayout} color="link" onClick={() => this.editQuestion(questionObj, questionsIndex)}>
-                                                                                                            <span className="fa fa-pencil-square-o"></span>{' '}
-                                                                                                            { questionObj.isMouseEnter && <span style={{ color: 'black' }}>Edit</span> }
-                                                                                                        </Button>
+                                                                                                        { 
+                                                                                                            questionObj.isMouseEnter && 
+                                                                                                            <div>
+                                                                                                                <Button id={`TooltipSetting_${questionObj.id}_${questionsIndex}`} onClick={() => this.chnageQuestionType(questionObj, questionsIndex)} color="link">
+                                                                                                                    <span className="fa fa-cog"></span>{' '}
+                                                                                                                </Button>
+                                                                                                                <Tooltip placement="bottom" isOpen={questionObj.isTooltipSettingOpen} target={`TooltipSetting_${questionObj.id}_${questionsIndex}`} toggle={() => this.toggleTooltipButtons(questionObj.id, questionsIndex, 'isTooltipSettingOpen')}>    
+                                                                                                                    Setting
+                                                                                                                </Tooltip>
+                                                                                                            </div>
+                                                                                                        }
+
+                                                                                                        { 
+                                                                                                            questionObj.isMouseEnter && 
+                                                                                                                <div>
+                                                                                                                    <Button id={`TooltipCopy_${questionObj.id}_${questionsIndex}`} color="link" onClick={() => {}}>
+                                                                                                                        <span className="fa fa-files-o"></span>{' '}
+                                                                                                                    </Button>
+                                                                                                                    <Tooltip placement="bottom" isOpen={questionObj.isTooltipCopyOpen} target={`TooltipCopy_${questionObj.id}_${questionsIndex}`} toggle={() => this.toggleTooltipButtons(questionObj.id, questionsIndex, 'isTooltipCopyOpen')}>    
+                                                                                                                        Copy
+                                                                                                                    </Tooltip>
+                                                                                                                </div>
+                                                                                                        }
+
+                                                                                                        { 
+                                                                                                            questionObj.isMouseEnter && 
+                                                                                                            <div>
+                                                                                                                <Button id={`TooltipLogic_${questionObj.id}_${questionsIndex}`} color="link" onClick={() => {}}>
+                                                                                                                    <span className="fa fa-cogs"></span>{' '}
+                                                                                                                </Button>
+                                                                                                                <Tooltip placement="bottom" isOpen={questionObj.isTooltipLogicOpen} target={`TooltipLogic_${questionObj.id}_${questionsIndex}`} toggle={() => this.toggleTooltipButtons(questionObj.id, questionsIndex, 'isTooltipLogicOpen')}>    
+                                                                                                                    Logic
+                                                                                                                </Tooltip>
+                                                                                                            </div>
+                                                                                                        }
+
+                                                                                                        { 
+                                                                                                            questionObj.isMouseEnter && 
+                                                                                                                <div>
+                                                                                                                    <Button id={`TooltipEdit_${questionObj.id}_${questionsIndex}`}  disabled={questionObj.editingLayout} color="link" onClick={() => this.editQuestion(questionObj, questionsIndex)}>
+                                                                                                                        <span className="fa fa-pencil-square-o"></span>{' '}
+                                                                                                                    </Button>
+                                                                                                                    <Tooltip placement="bottom" isOpen={questionObj.isTooltipEditOpen} target={`TooltipEdit_${questionObj.id}_${questionsIndex}`} toggle={() => this.toggleTooltipButtons(questionObj.id, questionsIndex, 'isTooltipEditOpen')}>    
+                                                                                                                        Edit
+                                                                                                                    </Tooltip>
+                                                                                                                </div>
+                                                                                                        }
                                                                                                         
                                                                                                         <Button disabled={questionObj.editing} color="link" onClick={() => this.editingLayout(questionObj, questionsIndex)}>
                                                                                                             {

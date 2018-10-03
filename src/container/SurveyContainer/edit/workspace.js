@@ -309,6 +309,12 @@ class Pages extends React.Component {
     makeLayoutBreak(questionObj, questionsIndex) {
         let { questionsArray } = this.state
         let questionsIndexArray = questionsArray[questionsIndex]
+        questionsIndexArray = questionsIndexArray.map(question => {
+            if(question.id === questionObj.id){
+                question.isPageBreaked = !question.isPageBreaked
+            }
+            return question;
+        })
         let pageBreakIndex = questionsIndexArray.findIndex(question => question.id === questionObj.id)
         let pageFirstArray = questionsIndexArray.splice(0, pageBreakIndex+1)
         pageFirstArray = pageFirstArray.map(pageFirst => {
@@ -647,7 +653,7 @@ class Pages extends React.Component {
                                                                             {
                                                                                 questionsObj.map((questionObj, index) => {
                                                                                     return (
-                                                                                        <div onMouseLeave={() => this.showButtons(questionObj, questionsIndex, false)} onClick={() => this.showButtons(questionObj, questionsIndex, true)} key={index} className={questionObj.isSeperated ? 'question-seperated' : ''}>
+                                                                                        <div onMouseLeave={() => this.showButtons(questionObj, questionsIndex, false)} onClick={() => this.showButtons(questionObj, questionsIndex, true)} key={index} className={questionObj.isSeperated ? 'question-seperated' : 'question-not-seperated'}>
                                                                                             <div className={`card questionCardCustom`} style={{ height: 'auto' }} >
                                                                                                 <CardHeader>
                                                                                                     <div className="d-flex justify-content-end" > 
@@ -1083,8 +1089,8 @@ class Pages extends React.Component {
                                                                                                             <Button color="secondary" onClick={() => this.handleDrawerEvent('addQuestionType')}>Add Question</Button>
                                                                                                         </div>  
                                                                                                         <div className="page-editing-button d-inline">
-                                                                                                            <Button style={{ marginRight: 5 }} outline color="secondary" onClick={() => this.makeSepratorBreake(questionObj, questionsIndex) }>Seperator</Button>
-                                                                                                            <Button color="secondary" outline onClick={() => this.makeLayoutBreak(questionObj, questionsIndex) }>Page Break</Button>
+                                                                                                            <Button style={{ marginRight: 5 }} outline color="secondary" onClick={() => this.makeSepratorBreake(questionObj, questionsIndex) }>{ questionObj.isSeperated ? 'REMOVE SECTION BREAK' : 'SECTION BREAK' }</Button>
+                                                                                                            <Button color="secondary" outline onClick={() => this.makeLayoutBreak(questionObj, questionsIndex) }>{ questionObj.isPageBreaked ? 'REMOVE PAGE BREAK' : 'PAGE BREAK' }</Button>
                                                                                                         </div> 
                                                                                                     </div>
                                                                                             }

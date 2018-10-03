@@ -315,6 +315,12 @@ class Blank extends React.Component {
     makeLayoutBreak(questionObj, questionsIndex) {
         let { questionsArray } = this.state
         let questionsIndexArray = questionsArray[questionsIndex]
+        questionsIndexArray = questionsIndexArray.map(question => {
+            if(question.id === questionObj.id){
+                question.isPageBreaked = !question.isPageBreaked
+            }
+            return question;
+        })
         let pageBreakIndex = questionsIndexArray.findIndex(question => question.id === questionObj.id)
         let pageFirstArray = questionsIndexArray.splice(0, pageBreakIndex+1)
         pageFirstArray = pageFirstArray.map(pageFirst => {
@@ -458,7 +464,7 @@ class Blank extends React.Component {
             })
             return questionsList
         })
-        this.setState({ questionsArray }, () => console.log(questionsArray))
+        this.setState({ questionsArray }, () => console.log(questionsArray, 'setAllQuestionsColor'))
     }
 
     setAllQuestionFontSize = (type, fontSize) => {
@@ -470,7 +476,7 @@ class Blank extends React.Component {
             })
             return questionsList
         })
-        this.setState({ questionsArray }, () => console.log(questionsArray))
+        this.setState({ questionsArray }, () => console.log(questionsArray, 'setAllQuestionFontSize'))
     }
 
     onEditOptiosPressed( questionID, questionsIndex, optionsIndex ) {
@@ -610,13 +616,28 @@ class Blank extends React.Component {
         return style[type];
     }
 
+    setQuestionLayout = (type, value) => {
+        let { questionsArray } = this.state
+        questionsArray = questionsArray.map(questionsList => {
+            questionsList[type] = value
+            questionsList.map(question => {
+                question[type] = value
+                return question
+            })
+            return questionsList
+        })
+        this.setState({ questionsArray }, () => console.log(questionsArray, 'setQuestionLayout'))
+    }
+
     render(){
         if(!this.props.location.state){
             return null;
         }
         return (
             <div className="doc buttons-doc page-layout simple full-width">
-                <PersistentDrawer 
+                <PersistentDrawer
+                    page={'poll'}
+                    setQuestionLayout={this.setQuestionLayout}
                     setAllQuestionsColor={this.setAllQuestionsColor}
                     setFontSize={this.setAllQuestionFontSize}
                     questionsArray={this.state.questionsArray} addQuestionArray={this.addQuestionArray} 
@@ -653,12 +674,12 @@ class Blank extends React.Component {
                                                             {
                                                                 this.state.questionsArray.map((questionsObj, questionsIndex) => {
                                                                     return (
-                                                                        <div key={questionsIndex} id={`Page${questionsIndex}`} className={`form-group ${questionsIndex > 0 ? 'new_page' : ''}`} style={{ borderBottomWidth: '1px', borderBottomColor: 'black' }}>
+                                                                        <div key={questionsIndex} id={`Page${questionsIndex}`} className={`form-group ${questionsIndex > 0 ? 'new_page' : ''} ${ questionsObj.questionContainerInColumns ? 'row' : '' }`} style={{ borderBottomWidth: '1px', borderBottomColor: 'black' }}>
                                                                             {
                                                                                 questionsObj.map((questionObj, index) => {
                                                                                     return (
-                                                                                        <div onMouseLeave={() => this.showButtons(questionObj, questionsIndex, false)} onClick={() => this.showButtons(questionObj, questionsIndex, true)} key={index} className={questionObj.isSeperated ? 'question-seperated' : ''}>
-                                                                                            <div className={`card questionCardCustom`} style={{ height: 'auto' }} >
+                                                                                        <div style={{ width: `${ questionObj.questionContainerInColumns}%` }} onMouseLeave={() => this.showButtons(questionObj, questionsIndex, false)} onClick={() => this.showButtons(questionObj, questionsIndex, true)} key={index} className={`${questionObj.isSeperated ? 'question-seperated' : 'question-not-seperated'}`}>
+                                                                                            <div className={`card questionCardCustom`} style={{ height: `${questionObj.questionContainerHeight}px` }} >
                                                                                                 <CardHeader>
                                                                                                     <div className="d-flex justify-content-end" > 
                                                                                                         { 
@@ -764,7 +785,7 @@ class Blank extends React.Component {
                                                                                                                                         {
                                                                                                                                             this.state.colors.map((color, index) => {
                                                                                                                                                 return(
-                                                                                                                                                    <li key={index} onClick={() => this.setColor('simple', questionObj, color.colorCode, questionsIndex)} data-background={`${color.class}`} className={`${color.class}`}><a href="#" data-class={`is ${color.class}`}>{ color.class }</a></li>
+                                                                                                                                                    <li key={index} onClick={() => this.setColor('simple', questionObj, color.colorCode, questionsIndex)} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
                                                                                                                                                 )
                                                                                                                                             })
                                                                                                                                         }
@@ -778,7 +799,7 @@ class Blank extends React.Component {
                                                                                                                                         {
                                                                                                                                             this.state.colors.map((color, index) => {
                                                                                                                                                 return(
-                                                                                                                                                    <li key={index} onClick={() => this.setColor('boxed', questionObj, color.colorCode, questionsIndex)} data-background={`${color.class}`} className={`${color.class}`}><a href="#" data-class={`is ${color.class}`}>{ color.class }</a></li>
+                                                                                                                                                    <li key={index} onClick={() => this.setColor('boxed', questionObj, color.colorCode, questionsIndex)} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
                                                                                                                                                 )
                                                                                                                                             })
                                                                                                                                         }
@@ -792,7 +813,7 @@ class Blank extends React.Component {
                                                                                                                                         {
                                                                                                                                             this.state.colors.map((color, index) => {
                                                                                                                                                 return(
-                                                                                                                                                    <li key={index} onClick={() => this.setColor('inline', questionObj, color.colorCode, questionsIndex)} data-background={`${color.class}`} className={`${color.class}`}><a href="#" data-class={`is ${color.class}`}>{ color.class }</a></li>
+                                                                                                                                                    <li key={index} onClick={() => this.setColor('inline', questionObj, color.colorCode, questionsIndex)} data-background={`${color.class}`} className={`${color.class}`}><a href="javascript:void(0);" data-class={`is ${color.class}`}>{ color.class }</a></li>
                                                                                                                                                 )
                                                                                                                                             })
                                                                                                                                         }
@@ -806,7 +827,7 @@ class Blank extends React.Component {
                                                                                                                                         {
                                                                                                                                             this.state.fontSizes.map((fontSize, index) => {
                                                                                                                                                 return(
-                                                                                                                                                    <li key={index} onClick={() => this.setFontSize('questionFontsize', questionObj, fontSize, questionsIndex)} className="light"><a className='label-fontsize' href="#" data-class="is light">{ fontSize }</a></li>
+                                                                                                                                                    <li key={index} onClick={() => this.setFontSize('questionFontsize', questionObj, fontSize, questionsIndex)} className="light"><a className='label-fontsize' href="javascript:void(0);" data-class="is light">{ fontSize }</a></li>
                                                                                                                                                 )
                                                                                                                                             })
                                                                                                                                         }
@@ -1093,8 +1114,8 @@ class Blank extends React.Component {
                                                                                                             <Button color="secondary" onClick={() => this.handleDrawerEvent('addQuestionType')}>Add Question</Button>
                                                                                                         </div>  
                                                                                                         <div className="page-editing-button d-inline">
-                                                                                                            <Button style={{ marginRight: 5 }} outline color="secondary" onClick={() => this.makeSepratorBreake(questionObj, questionsIndex) }>Seperator</Button>
-                                                                                                            <Button color="secondary" outline onClick={() => this.makeLayoutBreak(questionObj, questionsIndex) }>Page Break</Button>
+                                                                                                            <Button style={{ marginRight: 5 }} outline color="secondary" onClick={() => this.makeSepratorBreake(questionObj, questionsIndex) }>{ questionObj.isSeperated ? 'REMOVE SECTION BREAK' : 'SECTION BREAK' }</Button>
+                                                                                                            <Button color="secondary" outline onClick={() => this.makeLayoutBreak(questionObj, questionsIndex) }>{ questionObj.isPageBreaked ? 'REMOVE PAGE BREAK' : 'PAGE BREAK' }</Button>
                                                                                                         </div> 
                                                                                                     </div>
                                                                                             }

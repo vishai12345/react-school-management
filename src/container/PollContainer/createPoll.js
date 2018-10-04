@@ -944,9 +944,9 @@ class Blank extends React.Component {
                                                                                                 {!questionObj.editing ? null : 
                                                                                                     <div className='questionEditingLayoutContainer p-10'>
                                                                                                         <TextField 
-                                                                                                                id="with-placeholder" fullWidth label="Your Question" 
-                                                                                                                value={questionObj.question} onChange={(e) => this.updateQuestion('question', e.target.value, questionObj, undefined, questionsIndex)}
-                                                                                                                placeholder="Your Question" autoFocus
+                                                                                                            id="with-placeholder" fullWidth label="Your Question" 
+                                                                                                            value={questionObj.question} onChange={(e) => this.updateQuestion('question', e.target.value, questionObj, undefined, questionsIndex)}
+                                                                                                            placeholder="Your Question" autoFocus
                                                                                                         />
                                                                                                         <div className='form-group pl-10 pr-10'>
                                                                                                             {   
@@ -987,9 +987,9 @@ class Blank extends React.Component {
                                                                                                                                             <FormGroup check key={indexOption}>
                                                                                                                                                 { questionObj.questionType === 'multiple' ? 
                                                                                                                                                     questionObj.editingOptionsIndex == indexOption ? <div onMouseLeave={() => this.onEditOptiosPressed(questionObj.id, questionsIndex, null)} className="editQuestionOptionsContainer">
-                                                                                                                                                        <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth label={`Option ${indexOption+1}`}
-                                                                                                                                                        value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
-                                                                                                                                                        placeholder={`Option ${indexOption+1}`} />
+                                                                                                                                                        <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth
+                                                                                                                                                            value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
+                                                                                                                                                        />
                                                                                                                                                     </div> :
                                                                                                                                                         <div className="d-flex">
                                                                                                                                                             <Checkbox  color="primary" checked={questionObj.answerId ? questionObj.answerId.findIndex(answerIndex => indexOption === answerIndex) !== -1 : false} onChange={() => this.addAnswer(questionObj, indexOption, questionsIndex)} value={optionEle} />
@@ -1026,9 +1026,9 @@ class Blank extends React.Component {
                                                                                                                                         return(
                                                                                                                                             <div>
                                                                                                                                                 {questionObj.editingOptionsIndex == indexOption ? <div onMouseLeave={() => this.onEditOptiosPressed(questionObj.id, questionsIndex, null)} className="editQuestionOptionsContainer">
-                                                                                                                                                    <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth label={`Option ${indexOption+1}`}
+                                                                                                                                                    <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth
                                                                                                                                                         value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
-                                                                                                                                                        placeholder={`Option ${indexOption+1}`} />
+                                                                                                                                                    />
                                                                                                                                                 </div> :
                                                                                                                                                 <div className="questionOptionsCustomInnerContainer d-flex">
                                                                                                                                                     <Radio

@@ -88,7 +88,12 @@ class Blank extends React.Component {
                 $(this).addClass('hiddenLayout');
             })
             $this.next('div.optionsArrowContainer').removeClass('hiddenLayout')
-            that.setState({ btnDropright: false })
+            that.setState({ btnDropright: false }, () => {
+                const questionId = $(this).attr('data-questionID')
+                const questionIndex = $(this).attr('data-questionIndex')
+                const questionOptionIndex = $(this).attr('data-questionOptionIndex')
+                that.onEditOptiosPressed(questionId, questionIndex, questionOptionIndex)
+            })
         })
 
         $(document).on('click', '.copyOptionClicked', function(e){
@@ -315,25 +320,40 @@ class Blank extends React.Component {
     makeLayoutBreak(questionObj, questionsIndex) {
         let { questionsArray } = this.state
         let questionsIndexArray = questionsArray[questionsIndex]
+        let isPageBreaked = true;
+        let pageFirstArray = [];
         questionsIndexArray = questionsIndexArray.map(question => {
             if(question.id === questionObj.id){
                 question.isPageBreaked = !question.isPageBreaked
+                isPageBreaked = question.isPageBreaked
             }
             return question;
         })
         let pageBreakIndex = questionsIndexArray.findIndex(question => question.id === questionObj.id)
-        let pageFirstArray = questionsIndexArray.splice(0, pageBreakIndex+1)
+        if(!isPageBreaked){
+            if(questionsArray[questionsIndex + 1] && questionsArray[questionsIndex + 1].length){
+                pageFirstArray = [...questionsIndexArray, ...questionsArray[questionsIndex + 1]]
+                questionsArray[questionsIndex + 1] = []
+            }else{
+                pageFirstArray = [...questionsIndexArray]
+            }
+            questionsIndexArray = [];
+        }else{
+            pageFirstArray = questionsIndexArray.splice( 0, pageBreakIndex + 1 )
+        }
         pageFirstArray = pageFirstArray.map(pageFirst => {
             pageFirst.pageNumber = questionsIndex
             return pageFirst
         })
         questionsArray[questionsIndex] = pageFirstArray
-        if(questionsArray[questionsArray.length - 1].length === 0){
-            questionsArray[questionsArray.length - 1] = questionsIndexArray
-        }else{
-            questionsArray.push(questionsIndexArray)
+        if(questionsIndexArray.length){
+            if(questionsArray[questionsArray.length - 1].length === 0){
+                questionsArray[questionsArray.length - 1] = questionsIndexArray
+            }else{
+                questionsArray.push(questionsIndexArray)
+            }
         }
-        this.setState({ questionsArray })
+        this.setState({ questionsArray }, () => console.log(questionsArray, 'questionsArray --> makeLayoutBreak', isPageBreaked))
     }
 
     makeSepratorBreake(questionObj, questionsIndex) {
@@ -633,6 +653,7 @@ class Blank extends React.Component {
         if(!this.props.location.state){
             return null;
         }
+        console.log(this.props.location.state)
         return (
             <div className="doc buttons-doc page-layout simple full-width">
                 <PersistentDrawer
@@ -666,7 +687,11 @@ class Blank extends React.Component {
                                             <div className="widget-content pt-2 pb-8 d-flex flex-column">
                                                 <div className="card-body row">
                                                     <Col className='text-center form-group'>
-                                                        <p>Poll Name : { this.props.location.state.pollName }</p>
+                                                        <div className='pollInfoContainer'>
+                                                            <p style={{ textAlign: 'left' }}>Poll Name : { this.props.location.state.pollName }</p>
+                                                            <p style={{ textAlign: 'right' }}>Poll Starting Date : { this.props.location.state.startingDate }</p>
+                                                            <p style={{ textAlign: 'right' }}>Poll Ending Date : { this.props.location.state.endingDate }</p>
+                                                        </div>
                                                         { !this.state.questionsArray.length && <p className="card-text">This poll doesn't have any questions yet.</p>}   
                                                     </Col>
                                                     { this.state.questionsArray.length ?
@@ -846,7 +871,7 @@ class Blank extends React.Component {
                                                                                                                                     {questionObj.question}
                                                                                                                                 </p>    
                                                                                                                             </div>
-                                                                                                                            <div className="questionOptionsCustomUpperContainer" style={this.getAllStyle(questionObj, 'optionStyle')}>
+                                                                                                                            <div className={`questionOptionsCustomUpperContainer ${questionObj.questionLayoutType}`} style={this.getAllStyle(questionObj, 'optionStyle')}>
                                                                                                                                     {   
                                                                                                                                         questionObj.questionType === 'multiple' ?
                                                                                                                                             <div className="questionOptionsCustomContainer">
@@ -977,7 +1002,7 @@ class Blank extends React.Component {
                                                                                                         }
                                                                                                         {
                                                                                                             !questionObj.editing ? 
-                                                                                                                <div className='questionOptionsCustomUpperContainer' style={this.getAllStyle(questionObj, 'optionStyle')}>
+                                                                                                                <div className={`questionOptionsCustomUpperContainer ${questionObj.questionLayoutType}`} style={this.getAllStyle(questionObj, 'optionStyle')}>
                                                                                                                     {   
                                                                                                                         questionObj.questionType === 'multiple' ?
                                                                                                                             <div className="questionOptionsCustomContainer">
@@ -986,14 +1011,29 @@ class Blank extends React.Component {
                                                                                                                                         return(
                                                                                                                                             <FormGroup check key={indexOption}>
                                                                                                                                                 { questionObj.questionType === 'multiple' ? 
-                                                                                                                                                    questionObj.editingOptionsIndex == indexOption ? <div onMouseLeave={() => this.onEditOptiosPressed(questionObj.id, questionsIndex, null)} className="editQuestionOptionsContainer">
-                                                                                                                                                        <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth
-                                                                                                                                                            value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
-                                                                                                                                                        />
-                                                                                                                                                    </div> :
-                                                                                                                                                        <div className="d-flex">
-                                                                                                                                                            <Checkbox  color="primary" checked={questionObj.answerId ? questionObj.answerId.findIndex(answerIndex => indexOption === answerIndex) !== -1 : false} onChange={() => this.addAnswer(questionObj, indexOption, questionsIndex)} value={optionEle} />
-                                                                                                                                                            <FormLabel component="span" className="optionsSpanContainer">{optionEle}</FormLabel>
+                                                                                                                                                        <div className="d-flex" onMouseLeave={() => this.onEditOptiosPressed(questionObj.id, questionsIndex, null)}>
+                                                                                                                                                            {
+                                                                                                                                                                questionObj.editingOptionsIndex == indexOption && <div className="editQuestionOptionsContainer">
+                                                                                                                                                                    <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth
+                                                                                                                                                                        value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
+                                                                                                                                                                    />
+                                                                                                                                                                </div>
+                                                                                                                                                            }
+                                                                                                                                                            {
+                                                                                                                                                                !(questionObj.editingOptionsIndex == indexOption) && 
+                                                                                                                                                                    <Checkbox  color="primary" checked={questionObj.answerId ? questionObj.answerId.findIndex(answerIndex => indexOption === answerIndex) !== -1 : false} onChange={() => this.addAnswer(questionObj, indexOption, questionsIndex)} value={optionEle} />
+                                                                                                                                                            }
+                                                                                                                                                            {
+                                                                                                                                                                !(questionObj.editingOptionsIndex == indexOption) && 
+                                                                                                                                                                    <FormLabel component="span" 
+                                                                                                                                                                        className="optionsSpanContainer" 
+                                                                                                                                                                        data-questionID={questionObj.id} 
+                                                                                                                                                                        data-questionIndex={questionsIndex} 
+                                                                                                                                                                        data-questionOptionIndex={indexOption}
+                                                                                                                                                                    >
+                                                                                                                                                                            {optionEle}
+                                                                                                                                                                    </FormLabel>
+                                                                                                                                                            }
                                                                                                                                                             <div className="optionsArrowContainer hiddenLayout">
                                                                                                                                                                 <ButtonDropdown direction="right" isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}>
                                                                                                                                                                     <DropdownToggle caret />
@@ -1025,21 +1065,28 @@ class Blank extends React.Component {
                                                                                                                                     questionObj.options.map((optionEle, indexOption) => {
                                                                                                                                         return(
                                                                                                                                             <div>
-                                                                                                                                                {questionObj.editingOptionsIndex == indexOption ? <div onMouseLeave={() => this.onEditOptiosPressed(questionObj.id, questionsIndex, null)} className="editQuestionOptionsContainer">
-                                                                                                                                                    <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth
-                                                                                                                                                        value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
-                                                                                                                                                    />
-                                                                                                                                                </div> :
-                                                                                                                                                <div className="questionOptionsCustomInnerContainer d-flex">
-                                                                                                                                                    <Radio
+                                                                                                                                                <div className="questionOptionsCustomInnerContainer d-flex" onMouseLeave={() => this.onEditOptiosPressed(questionObj.id, questionsIndex, null)}>
+                                                                                                                                                    {questionObj.editingOptionsIndex == indexOption && <div className="editQuestionOptionsContainer">
+                                                                                                                                                        <TextField className='mb-10' key={indexOption} id="with-placeholder" fullWidth
+                                                                                                                                                            value={optionEle} onChange={(e) => this.updateQuestion('options', e.target.value, questionObj, indexOption, questionsIndex)}
+                                                                                                                                                        />
+                                                                                                                                                    </div>}
+                                                                                                                                                    {!(questionObj.editingOptionsIndex == indexOption) && <Radio
                                                                                                                                                         checked={questionObj.answerId === `${indexOption}`}
                                                                                                                                                         onChange={e => this.addAnswer(questionObj, e.target.value, questionsIndex)}
                                                                                                                                                         value={`${indexOption}`}
                                                                                                                                                         color="primary"
                                                                                                                                                         name="radio-button-demo"
                                                                                                                                                         aria-label={optionEle}
-                                                                                                                                                    />
-                                                                                                                                                    <FormLabel component="span" className="optionsSpanContainer">{optionEle}</FormLabel>
+                                                                                                                                                    />}
+                                                                                                                                                    {!(questionObj.editingOptionsIndex == indexOption) && <FormLabel component="span" 
+                                                                                                                                                        className="optionsSpanContainer"
+                                                                                                                                                        data-questionID={questionObj.id} 
+                                                                                                                                                        data-questionIndex={questionsIndex} 
+                                                                                                                                                        data-questionOptionIndex={indexOption}
+                                                                                                                                                    >
+                                                                                                                                                        {optionEle}
+                                                                                                                                                    </FormLabel>}
                                                                                                                                                     <div className="optionsArrowContainer hiddenLayout">
                                                                                                                                                         <ButtonDropdown direction="right" isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}>
                                                                                                                                                             <DropdownToggle caret />
@@ -1056,7 +1103,7 @@ class Blank extends React.Component {
                                                                                                                                                             </DropdownMenu>
                                                                                                                                                         </ButtonDropdown>
                                                                                                                                                     </div>
-                                                                                                                                                </div>}
+                                                                                                                                                </div>
                                                                                                                                             </div>
                                                                                                                                         )
                                                                                                                                     })

@@ -75,7 +75,6 @@ body.fuse-aside-folded:not(.fuse-aside-expanded) #aside {
   height: 2.3rem;
   /* 6sep by yogesh */
   padding: 0 1rem;
-  height: 3rem;
   display: flex;
   align-items: center;
   /* 6sep by yogesh */
@@ -346,14 +345,17 @@ background: linear-gradient(to right, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, F
   border-bottom: 0;
 }
 
-.custom-tab-style ul.nav.nav-tabs li.nav-item {
-  width: 20.33%;
+.perisistentDraweerCustomClass .card.questionCardCustom .custom-tab-style ul.nav.nav-tabs li.nav-item {
+    width: 25%;
   text-align: center;
+}
+.perisistentDraweerCustomClass .card.questionCardCustom .custom-tab-style ul.nav.nav-tabs li.nav-item:last-child a {
+    border: none;
 }
 
 .popover {
   transform: none !important;
-  right: 250px !important;
+  right: 30% !important;
   left: auto !important;
   top: 23% !important;
 }
@@ -688,7 +690,7 @@ table thead tr th {
 }
 
 #Popover1 {
-  width: 100%;
+  width: 95%;
 }
 #Popover2 {
   width: 100%;
@@ -766,8 +768,9 @@ ul.nav.nav-tabs li.nav-item a.active.nav-link {
 .drawerCustomClass .close-icn i {text-align:  left;padding-left: 10px;cursor:  pointer;}
 .drawerCustomClass ul.nav.nav-tabs li.nav-item a {
     line-height:  31px;
-    font-size: 14px !important;
+    font-size: 13px !important;
     color: #000;
+    padding: 0 12px;
 }
 .drawerCustomClass ul.nav.nav-tabs li.nav-item a.active.nav-link {
     color: #2196f3;
@@ -782,10 +785,10 @@ ul.nav.nav-tabs li.nav-item a.active.nav-link {
     transition: all 300ms ease;
     right: 0;
     height: 100vh;
-    width: 25%;
+    width: 30%;
 }
 .perisistentDraweerCustomClass.openDrawer {
-  margin-right: 350px;
+  margin-right: 31%;
 }
 
 .perisistentDraweerCustomClass .card-body.row {
@@ -1055,16 +1058,6 @@ li.list-inline-item.language-dropdown.tour-step-5.dropdown.show.nav-item .dropdo
 
 .perisistentDraweerCustomClass .questionCardCustom {
   border: 4px solid transparent;
-  border-left: 4px solid #2196f3;
-}
-
-.horizontal-menu > ul > li .sub-menu li .sub-menu-child {
-  left:  13.1rem;
-}
-
-.perisistentDraweerCustomClass .questionCardCustom {
-  border: 4px solid transparent;
-  border-left: 4px solid #2196f3;
 }
 
 .perisistentDraweerCustomClass .questionCardCustom .card-body {
@@ -1231,10 +1224,6 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
 .popover.show.bs-popover-left span.arrow {
   top: 50% !important;
   transform: translateY(-50%) !important;
-}
-
-.card.questionCardCustom .form-control.customRadioContainer .from-group.customRadioInnerContainer {
-  padding: 0 15px;
 }
 
 .card.questionCardCustom button.btn.btn-link {
@@ -1411,12 +1400,12 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
   p.close-icn span {
     width: 100%;
     position: absolute;
-    left: -13px;
-    top: -11px;
+        left: -11px;
+    top: -8px;
   }
 
   .drawerCustomClass > div {
-    overflow: scroll;
+    overflow: visible;
   }
 
   .drawerCustomClass p.close-icn span i.zmdi.zmdi-close {
@@ -1428,9 +1417,10 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
   }
 
   .drawerInnerAfterDividerCustomClass {
-      margin-top: -25px;
+    /*  margin-top: -25px;
       padding-top: 25px;
       margin-left: 12px;
+      */
   }
 
   .card.questionCardCustom .card-body .form-check label span {
@@ -1500,12 +1490,12 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
     float:  left;
     width: 100%;
   }
-  .whole_options .option_left {
-    width: 49%;
-    float:  left;
-  }
+ .whole_options .option_right, .whole_options .option_left {
+    width: 49.6%;
+    float: left;
+    border-left: 1px solid #e8e6e6;
+}
   .whole_options .option_right {
-    width: 49%;
     float: right;
   }
   .whole_options a {
@@ -1526,7 +1516,8 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
   }
   .whole_options img.option_img {
     background: #fff;
-    padding: 4px 0 4px 4px;
+    padding: 4px 6px 4px 0px;
+    height: 27px;
   }
   .whole_options a:hover {
     border: 1px solid #517998;
@@ -1568,14 +1559,17 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
     line-height: 21px;
     vertical-align: middle;
   }
-  .typ1 {
-    margin: 15px 0;
-  }
+  
   span.hd_spn {
-    font-size: 15px;
-    padding-left:  10px;
+        font-size: 14px;
+    padding-left: 6px;
     font-weight: bold;
     white-space: nowrap;
+    display: inline-block;
+    margin-bottom: 7px;
+    float: left;
+    width: 19%;
+    padding-top: 8px;
   }
   .add_quest_page_uniq .aside .aside-content-wrapper .aside-content.bg-light.text-auto .aside-toolbar {
     border-bottom: 1px solid #c5c5c5;
@@ -1601,15 +1595,246 @@ ul.list-unstyled.nav li.nav-item:nth-child(3) ul.list-unstyled.sub-menu {
 }
 
 div.card-body .questionLayoutContainer .questionOptionsCustomUpperContainer .form-check .optionsArrowContainer button.dropdown-toggle.btn.btn-secondary {    
-  border-radius: 100%;    
-  padding: 4px 2px !important;    
-  display: flex;    
-  align-items: center;    
-  margin-left: 10px;    
-  background-color: #a2a2a2 !important;    
-  margin-top: -7px;
-}
+    border-radius: 100%;
+    padding: 0px 0px !important;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    background-color: #dadada !important;
+    margin-top: 1px;
+    border: 1px solid #8e8e8e;
+    width: 25px;
+    height: 25px;}
 
 .pollPreviewOptions {
   padding: 0 ;
+}
+
+
+
+/* ========= new drawer design ============== */
+
+
+.whole_options h3 {
+    font-size: 17px;
+    padding: 5px 0 5px 10px;
+    font-weight: 600;
+    color: #000000;
+    background: #e8e6e6;
+    /* float: left; */
+    /* width: 100%; */
+}
+.whole_options .option_right .typ1 {
+    padding-left: 4px;
+}
+.whole_options .option_left:first-child .typ1:nth-child(2) .option_img, .whole_options .option_left:first-child .typ1:nth-child(3) .option_img {
+    height: 44px;
+}
+.whole_options .option_left, .whole_options .option_right {
+    border-bottom: none;
+}
+.whole_options .option_right:last-child .typ1:nth-child(2) img.option_img {
+    height: 21px;
+}
+.drawerInnerAfterDividerCustomClass .navTabsContainer ul.nav {
+    text-align: right;
+    display: inline-block;
+        width: 75%;
+    border: none;
+    float: left;
+}
+
+.drawerInnerAfterDividerCustomClass .whole_options .typ1 {
+    border-bottom: 1px solid #c3c3c3;
+    height: 60px;
+    margin: 0;
+}
+
+
+
+
+.drawerInnerAfterDividerCustomClass .navTabsContainer ul.nav li a {
+    float: none;
+    border-right: 1px solid #e8e6e6 !important;
+    text-transform: uppercase;
+}
+
+.drawerInnerAfterDividerCustomClass .navTabsContainer ul.nav li.nav-item {display: inline-block;}
+.perisistentDraweerCustomClass .questionCardCustom .card-body .form-check .optionsSpanContainer {
+    line-height: 30px;
+    color: #484848;
+}
+.perisistentDraweerCustomClass .questionCardCustom .addMoreOption span, .perisistentDraweerCustomClass .questionCardCustom .editInBulkButton span {
+    color: #2196f3;
+    font-weight: 600;
+}
+.perisistentDraweerCustomClass .questionCardCustom .card-body .form-check .d-flex > span {
+    height: 33px;
+}
+.perisistentDraweerCustomClass .questionCardCustom .card-body .form-check .d-flex {}
+.perisistentDraweerCustomClass .questionCardCustom .card-body .form-check .d-flex svg {
+    color: #afafaf;
+}
+.perisistentDraweerCustomClass .questionCardCustom .addMoreOption, .perisistentDraweerCustomClass .questionCardCustom .editInBulkButton {
+    margin-top: 10px;
+}
+.page-header.text-auto.pt-3.pb-3.row.no-gutters.align-items-center.justify-content-between.pr-5.pl-5 {
+    padding: 7px 10px !important;
+    background: #d4d9dd;
+}
+.page-header.text-auto.pt-3.pb-3.row.no-gutters.align-items-center.justify-content-between.pr-5.pl-5 button {
+    padding: 5px 12px !important;
+}
+.drawerInnerCustomClass .tab-content {
+    max-height: 650px;
+    overflow-y: scroll;
+    float: left;
+    width: 100%;
+}
+.closedDrawer ~ .drawerCustomClass p.close-icn span {
+    display: none;
+}
+.pollInfoContainer {
+    background: #e8ecef;
+    padding: 6px 20px;
+    margin-bottom: 12px;
+}
+
+.pollInfoContainer p:first-child {
+    float: left;
+    font-size: 19px;
+    font-weight: 600;
+    color: #1e8ae0;
+    padding-top: 7px;
+}
+.card-body.row .text-center.form-group.col {
+    margin: 6px 0;
+    padding: 0;
+}
+.drawerInnerAfterDividerCustomClass .navTabsContainer .hide_drawer {
+        padding: 11px 0px 2px 11px;
+    float: left;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background: transparent;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    border-bottom: 2px solid;
+}
+.drawerInnerAfterDividerCustomClass .navTabsContainer {
+    float: left;
+    width: 100%;
+    clear: both;
+    border-bottom: 1px solid #bfbfbf;
+}
+.drawerInnerAfterDividerCustomClass .tab-content .tab-pane:last-child .mr-5 {
+    margin: 15px 9px 0px 10px;
+}
+.drawerInnerAfterDividerCustomClass .tab-content .tab-pane:last-child .mr-5 label {
+    font-size: 16px;
+    font-weight: 600;
+}
+.perisistentDraweerCustomClass .card.questionCardCustom .custom-tab-style ul.nav.nav-tabs {
+    background: #e8e8e8;
+    margin-top: -20px;
+}
+.perisistentDraweerCustomClass .card.questionCardCustom .custom-tab-style ul.nav.nav-tabs a.nav-link {
+    border: none;
+    border-right:1px solid #bdbdbd;
+    border-radius: 0;
+    text-align: center;
+    display: block;
+    line-height: 30px;
+    padding: 4px;
+}
+.perisistentDraweerCustomClass .card.questionCardCustom .custom-tab-style ul.nav.nav-tabs li.nav-item a.active {
+    font-size: 15px;
+    color: #2196f3;
+    font-weight: 700;
+}
+.card.questionCardCustom .form-control.customRadioContainer .from-group.customRadioInnerContainer > label, .card.questionCardCustom .customQuestionLayoutContainer label {
+    margin: 0;
+    height: 33px;
+}
+
+.card.questionCardCustom .form-control.customRadioContainer .from-group.customRadioInnerContainer > label span, .card.questionCardCustom .customQuestionLayoutContainer label span {
+    font-size: 15px;
+}
+
+.card.questionCardCustom .form-control.customRadioContainer .from-group.customRadioInnerContainer:before, .card.questionCardCustom .customQuestionLayoutContainer:before {
+    content: 'Option Convertor';
+    color: #000000;
+    padding: 8px 0 9px 3px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.card.questionCardCustom .customQuestionLayoutContainer:before {
+    content: 'Alignment';
+}
+
+.card.questionCardCustom .customRadioContainer, .card.questionCardCustom .customQuestionLayoutContainer {
+    width: 35%;
+    float: left;
+    margin-top: -10px;
+    padding: 10px 0;
+}
+.card.questionCardCustom .customQuestionLayoutContainer {
+    border-radius: 0;
+    padding-left: 30px;
+}
+.questionOptionsCustomUpperContainer .questionOptionsCustomContainer {
+    background: transparent;
+}
+
+.questionLayoutContainer {
+    margin: 10px;
+    padding-top: 1px !important;
+}
+
+.questionOptionsCustomUpperContainer .questionOptionsCustomContainer .questionOptionsCustomInnerContainer.d-flex span {
+    height: 38px;
+    line-height: 36px;
+    font-size: 16px;
+}
+.questionLayoutContainer .questionCustomContainer {
+    height: 25px;
+}
+.optionsArrowContainer .dropright .dropdown-menu {
+    padding: 0 10px;
+    border-radius: 0;
+    margin-left: 10px;
+}
+
+.optionsArrowContainer .dropright .dropdown-menu a.dropdown-item {
+    padding: 0;
+    background: transparent;
+    line-height: 28px !important;
+}
+
+.optionsArrowContainer .dropright .dropdown-menu a.dropdown-item:hover {
+    color: #2196f3;
+}
+
+.optionsArrowContainer .dropright button.dropdown-toggle {
+    background: #dadada !important;
+    box-shadow: none;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    padding: 0 !important;
+    margin:0 20px;
+    border: 1px solid #9c9fa2;
+}
+
+.optionsArrowContainer .dropright button.dropdown-toggle:after {
+    font-size: 24px;
+    color: #2094d9;
+    margin: 6px 10px;
+}
+.questionOptionsCustomUpperContainer .questionOptionsCustomContainer .d-flex {
+    height: 43px;
+}
+
+.questionOptionsCustomUpperContainer .questionOptionsCustomContainer .d-flex span {
+    line-height: 45px;
 }

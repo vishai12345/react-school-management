@@ -821,7 +821,7 @@ class Pages extends React.Component {
                                                                                                                                     {questionObj.question}
                                                                                                                                 </p>    
                                                                                                                             </div>
-                                                                                                                            <div className="questionOptionsCustomUpperContainer" style={this.getAllStyle(questionObj, 'optionStyle')}>
+                                                                                                                            <div className={`questionOptionsCustomUpperContainer ${questionObj.questionLayoutType}`} style={this.getAllStyle(questionObj, 'optionStyle')}>
                                                                                                                                     {   
                                                                                                                                         questionObj.questionType === 'multiple' ?
                                                                                                                                             <div className="questionOptionsCustomContainer">
@@ -953,7 +953,7 @@ class Pages extends React.Component {
                                                                                                         }
                                                                                                         {
                                                                                                             !questionObj.editing ? 
-                                                                                                                <div className='questionOptionsCustomUpperContainer' style={this.getAllStyle(questionObj, 'optionStyle')}>
+                                                                                                                <div className={`questionOptionsCustomUpperContainer ${questionObj.questionLayoutType}`} style={this.getAllStyle(questionObj, 'optionStyle')}>
                                                                                                                     {   
                                                                                                                         questionObj.questionType === 'multiple' ?
                                                                                                                             <div className="questionOptionsCustomContainer">

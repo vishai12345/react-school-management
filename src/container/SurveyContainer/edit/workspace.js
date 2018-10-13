@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import $ from 'jquery';
+import { NotificationManager } from 'react-notifications';
 
 import PersistentDrawer from '../../../routes/components/drawers/component/PersistentDrawer'
 const styles = {
@@ -37,42 +38,46 @@ const styles = {
 	},
 };
 
+const initialState = {
+    question: '',
+    questionsArray: [],
+    questionsAnswerArray: [],
+    questionType: '',
+    modal: false,
+    selectBodyBackgroundColor: 'white',
+    selectFooterBackgroundColor: 'white',
+    selectHeaderBackgroundColor: 'lightgray',
+    questionFontsize: '17px',
+    optionFontsize: '15px',
+    activeTab: '1',
+    isHandleDrawerOpen: false,
+    isLayoutChanging: false,
+    editingQuestion: null,
+    isChangingSurveyLayout: false,
+    isTranslating: false,
+    colors: [
+        {class: 'light', colorCode: '#e8e8e8'},
+        {class: 'yellow', colorCode: '#f5b632'},
+        {class: 'green', colorCode: '#7cb340'},
+        {class: 'red', colorCode: '#cf293a'},
+        {class: 'blue', colorCode: '#2094d9'},
+        {class: 'white', colorCode: '#fff'},
+    ],
+    fontSizes: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px'],
+    selectdAnswerOption:{},
+    updatedQuestionOptionsList: '',
+    targetQuestionObj: null,
+    targetQuestionIndex: null,
+    drawerType: 'addQuestionType',
+    btnDropright: false,
+    isTogglePreview: false
+}
+
 class Pages extends React.Component {
     initialOptions = [{ name: '' }, { name: '' }, { name: '' }, { name: '' }];
     state = {
-        question: '',
+        ...initialState,
         options: this.initialOptions,
-        questionsArray: [],
-        questionsAnswerArray: [],
-        questionType: '',
-        modal: false,
-        selectBodyBackgroundColor: 'white',
-        selectFooterBackgroundColor: 'white',
-        selectHeaderBackgroundColor: 'lightgray',
-        questionFontsize: '17px',
-        optionFontsize: '15px',
-        activeTab: '1',
-        isHandleDrawerOpen: false,
-        isLayoutChanging: false,
-        editingQuestion: null,
-        isChangingSurveyLayout: false,
-        isTranslating: false,
-        colors: [
-            {class: 'light', colorCode: '#e8e8e8'},
-            {class: 'yellow', colorCode: '#f5b632'},
-            {class: 'green', colorCode: '#7cb340'},
-            {class: 'red', colorCode: '#cf293a'},
-            {class: 'blue', colorCode: '#2094d9'},
-            {class: 'white', colorCode: '#fff'},
-        ],
-        fontSizes: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px'],
-        selectdAnswerOption:{},
-        updatedQuestionOptionsList: '',
-        targetQuestionObj: null,
-        targetQuestionIndex: null,
-        drawerType: 'addQuestionType',
-        btnDropright: false,
-        isTogglePreview: false
     }
 
     componentDidMount(){
@@ -612,8 +617,47 @@ class Pages extends React.Component {
     }
 
     saveAndSendSurvey = () => {
-        
-    } 
+        this.props.push('/survey/edit/send')
+    }
+
+    _onSave = () => {
+        this.setState({
+            question: '',
+            questionsArray: [],
+            questionsAnswerArray: [],
+            questionType: '',
+            modal: false,
+            selectBodyBackgroundColor: 'white',
+            selectFooterBackgroundColor: 'white',
+            selectHeaderBackgroundColor: 'lightgray',
+            questionFontsize: '17px',
+            optionFontsize: '15px',
+            activeTab: '1',
+            isHandleDrawerOpen: false,
+            isLayoutChanging: false,
+            editingQuestion: null,
+            isChangingSurveyLayout: false,
+            isTranslating: false,
+            colors: [
+                {class: 'light', colorCode: '#e8e8e8'},
+                {class: 'yellow', colorCode: '#f5b632'},
+                {class: 'green', colorCode: '#7cb340'},
+                {class: 'red', colorCode: '#cf293a'},
+                {class: 'blue', colorCode: '#2094d9'},
+                {class: 'white', colorCode: '#fff'},
+            ],
+            fontSizes: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px'],
+            selectdAnswerOption:{},
+            updatedQuestionOptionsList: '',
+            targetQuestionObj: null,
+            targetQuestionIndex: null,
+            drawerType: 'addQuestionType',
+            btnDropright: false,
+            isTogglePreview: false
+        }, () => {
+            NotificationManager.success('Survey successfully created and saved');
+        })
+    }
 
     render(){
         return (
@@ -1111,6 +1155,7 @@ class Pages extends React.Component {
                                                             }
                                                             <div class="d-flex">
                                                                 <button onClick={() => this.setState({ isTogglePreview: !this.state.isTogglePreview})} class="btn btn-primary ml-auto">Preview</button>
+                                                                <button onClick={this._onSave} class="btn btn-success ml-auto">Save</button>
                                                             </div>
                                                         </div> : null
                                                     }    

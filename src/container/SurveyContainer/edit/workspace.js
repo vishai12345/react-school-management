@@ -617,7 +617,7 @@ class Pages extends React.Component {
     }
 
     saveAndSendSurvey = () => {
-        this.props.push('/survey/edit/send')
+        this.props.history.push('/survey/edit/send')
     }
 
     _onSave = () => {

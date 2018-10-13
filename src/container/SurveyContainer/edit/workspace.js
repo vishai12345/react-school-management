@@ -71,7 +71,8 @@ class Pages extends React.Component {
         targetQuestionObj: null,
         targetQuestionIndex: null,
         drawerType: 'addQuestionType',
-        btnDropright: false
+        btnDropright: false,
+        isTogglePreview: false
     }
 
     componentDidMount(){
@@ -610,6 +611,10 @@ class Pages extends React.Component {
         return style[type];
     }
 
+    saveAndSendSurvey = () => {
+        
+    } 
+
     render(){
         return (
             <div className="doc buttons-doc page-layout simple full-width">
@@ -881,7 +886,7 @@ class Pages extends React.Component {
                                                                                                                                             </div> : null
                                                                                                                                     }
                                                                                                                                 </div>
-                                                                                                                        </div>
+                                                                                                                            </div>
                                                                                                                     </div>
                                                                                                                 </div>    
                                                                                                             </TabPane>
@@ -1104,6 +1109,9 @@ class Pages extends React.Component {
                                                                     )
                                                                 })
                                                             }
+                                                            <div class="d-flex">
+                                                                <button onClick={() => this.setState({ isTogglePreview: !this.state.isTogglePreview})} class="btn btn-primary ml-auto">Preview</button>
+                                                            </div>
                                                         </div> : null
                                                     }    
                                                 </div>
@@ -1139,6 +1147,102 @@ class Pages extends React.Component {
                         <ModalFooter>
                             <Button color="primary" onClick={this.addMoreOptions}>Submit</Button>{' '}
                             <Button color="secondary" onClick={this.toggleAddMoreOptionModal}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
+
+                    <Modal size='lg'  isOpen={this.state.isTogglePreview} toggle={() => this.setState({ isTogglePreview: !this.state.isTogglePreview })}>
+                        <ModalHeader toggle={() => this.setState({ isTogglePreview: !this.state.isTogglePreview })}>Survey Preview</ModalHeader>
+                        <ModalBody>
+                            {
+                                this.state.questionsArray.map((questionsObj, questionsIndex) => {
+                                    return (
+                                        <div key={questionsIndex} id={`Page${questionsIndex}`} className={`form-group ${questionsIndex > 0 ? 'new_page' : ''}`} style={{ borderBottomWidth: '1px', borderBottomColor: 'black' }}>
+                                            {
+                                                questionsObj.map((questionObj, index) => {
+                                                    return (
+                                                        <div className="questionLayoutContainer" style={this.getAllStyle(questionObj, 'bodyStyle')}>
+                                                            <div className="questionCustomContainer" style={{ 
+                                                                padding: '10px', ...this.getAllStyle(questionObj, 'questionStyle')
+                                                            }}>
+                                                                <p style={{ 
+                                                                    ...this.getAllStyle(questionObj, 'questionTitleStyle'),
+                                                                    transition: 'all 0.5s ease'
+                                                                }}>
+                                                                    {questionObj.question}
+                                                                </p>    
+                                                            </div>
+                                                            <div className={`questionOptionsCustomUpperContainer ${questionObj.questionLayoutType}`} style={this.getAllStyle(questionObj, 'optionStyle')}>
+                                                                {   
+                                                                    questionObj.questionType === 'multiple' ?
+                                                                        <div className="questionOptionsCustomContainer">
+                                                                            {
+                                                                                questionObj.options.map((optionEle, indexOption) => {
+                                                                                    return(
+                                                                                        <FormGroup check key={indexOption}>
+                                                                                            { questionObj.questionType === 'multiple' ? 
+                                                                                                <div className="d-flex">
+                                                                                                    <Checkbox  color="primary" checked={questionObj.answerId ? questionObj.answerId.findIndex(answerIndex => indexOption === answerIndex) !== -1 : false} onChange={() => this.addAnswer(questionObj, indexOption, questionsIndex)} value={optionEle} />
+                                                                                                    <FormLabel component="span">{optionEle}</FormLabel>
+                                                                                                </div>
+                                                                                                : null
+                                                                                            }
+                                                                                        </FormGroup>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </div>
+                                                                        : 
+                                                                    questionObj.questionType === 'single' ? 
+                                                                        <FormControl className={`form-control questionOptionsCustomContainer`}>
+                                                                            {
+                                                                                questionObj.options.map((optionEle, indexOption) => {
+                                                                                    return(
+                                                                                        <div>
+                                                                                            <div className="questionOptionsCustomInnerContainer d-flex">
+                                                                                                <Radio
+                                                                                                    checked={questionObj.answerId === `${indexOption}`}
+                                                                                                    onChange={e => this.addAnswer(questionObj, e.target.value, questionsIndex)}
+                                                                                                    value={`${indexOption}`}
+                                                                                                    color="primary"
+                                                                                                    name="radio-button-demo"
+                                                                                                    aria-label={optionEle}
+                                                                                                />
+                                                                                                <FormLabel component="span">{optionEle}</FormLabel>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </FormControl> :
+                                                                    questionObj.questionType === 'dropdown' ?
+                                                                        <div className='form-group pl-10 pr-10'>
+                                                                            <FormControl fullWidth>
+                                                                                <InputLabel htmlFor="option-simple">Option</InputLabel>
+                                                                                <Select onChange={(e) => this.submitOptionAnswer(e.target.value, questionObj.id)} value={this.state.selectdAnswerOption[questionObj.id] ? this.state.selectdAnswerOption[questionObj.id] : ''} inputProps={{ name: 'option', id: 'option-simple', }}>
+                                                                                    <MenuItem value=""><em>None</em></MenuItem>
+                                                                                    {
+                                                                                        questionObj.options.map((optionEle, indexOption) => {
+                                                                                            return(
+                                                                                            <MenuItem  key={indexOption} value={optionEle}>{optionEle}</MenuItem>
+                                                                                        )
+                                                                                    })}
+                                                                                </Select>
+                                                                            </FormControl>
+                                                                        </div> : null
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                    )
+                                })
+                            }
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={this.saveAndSendSurvey}>Save & Send</Button>{' '}
+                            <Button color="secondary" onClick={()=> this.setState({ isTogglePreview: !this.state.isTogglePreview })}>Close</Button>
                         </ModalFooter>
                     </Modal>
                 </PersistentDrawer>
